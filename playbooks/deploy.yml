@@ -1,5 +1,5 @@
 - name: Deploy some containers
-  hosts: managers[0]
+  hosts: master
   tasks:
   - docker_swarm_service:
       name: web
