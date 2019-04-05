@@ -1,0 +1,10 @@
+---
+  - name: Install raw python
+    raw: apt-get install python -y
+    register: result
+    changed_when: "'1 newly installed' in result.stdout"
+
+  - name: Install pip
+    apt:
+      name: python-pip
+      state: present

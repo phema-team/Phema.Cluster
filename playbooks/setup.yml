@@ -1,0 +1,21 @@
+---
+- name: Install requirements
+  hosts: managers:workers
+  roles:
+    - install_python
+    - install_docker
+
+- name: Setup swarm master
+  hosts: managers[0]
+  gather_facts: true
+  roles:
+    - setup-swarm-master
+
+- name: Setup swarm workers
+  hosts: workers
+  gather_facts: true
+  roles:
+    - setup-swarm-workers
+
+# Setup networks docker_network
+# Setup volumes docker_volume

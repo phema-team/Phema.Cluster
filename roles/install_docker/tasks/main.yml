@@ -1,0 +1,30 @@
+---
+- name: Install HTTPS transport
+  apt:
+    name: apt-transport-https
+    state: present
+
+- name: Import docker GPG key
+  apt_key:
+    url: "{{ docker_apt_key_url }}"
+    state: present
+
+- name: Add docker repository
+  apt_repository:
+    repo: 'deb {{ docker_apt_repository_url }} stretch stable'
+    state: present
+
+- name: Install docker
+  apt:
+    name: "{{ docker_package }}"
+    state: present
+
+- name: Uninstall docker-py
+  pip:
+    name: docker-py
+    state: absent
+
+- name: Install python docker
+  pip:
+    name: docker
+    state: present

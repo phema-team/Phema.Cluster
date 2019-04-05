@@ -1,0 +1,14 @@
+---
+- name: Enable swarm mode
+  docker_swarm:
+    state: present
+  register: result
+
+- name: Register manager token
+  set_fact:
+    manager_token: "{{ result.swarm_facts.JoinTokens.Manager }}"
+    
+- name: Register worker token
+  set_fact:
+    worker_token: "{{ result.swarm_facts.JoinTokens.Worker }}"
+    
