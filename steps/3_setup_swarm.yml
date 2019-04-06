@@ -1,0 +1,38 @@
+- name: Setup swarm master
+  hosts: master
+  gather_facts: true
+  tasks:
+    - name: Enable {{ ansible_default_ipv4.address }} swarm mode
+      docker_swarm:
+        state: present
+      register: result
+
+    - name: Register manager token
+      set_fact:
+        manager_token: "{{ result.swarm_facts.JoinTokens.Manager }}"
+        
+    - name: Register worker token
+      set_fact:
+        worker_token: "{{ result.swarm_facts.JoinTokens.Worker }}"
+
+- name: Setup swarm managers
+  hosts: managers
+  gather_facts: true
+  tasks:
+  - name: Join manager {{ ansible_default_ipv4.address }}
+    docker_swarm:
+      state: join
+      advertise_addr: "{{ ansible_default_ipv4.address }}"
+      remote_addrs: "{{ hostvars.master.ansible_default_ipv4.address }}"
+      join_token: "{{ hostvars.master.manager_token }}"
+
+- name: Setup swarm workers
+  hosts: workers
+  gather_facts: true
+  tasks:
+    - name: Join worker {{ ansible_default_ipv4.address }}
+      docker_swarm:
+        state: join
+        advertise_addr: "{{ ansible_default_ipv4.address }}"
+        remote_addrs: "{{ hostvars.master.ansible_default_ipv4.address }}"
+        join_token: "{{ hostvars.master.worker_token }}"

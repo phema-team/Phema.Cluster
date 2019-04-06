@@ -1,0 +1,8 @@
+---
+- import_playbook: steps/1_setup_python.yml
+- import_playbook: steps/2_setup_docker.yml
+- import_playbook: steps/3_setup_swarm.yml
+- import_playbook: steps/4_setup_database.yml
+
+# Setup networks docker_network
+# Setup volumes docker_volume

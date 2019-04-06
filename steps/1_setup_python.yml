@@ -1,4 +1,6 @@
----
+- name: Setup python
+  hosts: master:managers:workers
+  tasks:
   - name: Install raw python
     raw: apt-get install python -y
     register: result

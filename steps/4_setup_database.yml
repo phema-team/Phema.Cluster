@@ -1,0 +1,8 @@
+- name: Setup database
+  hosts: master
+  tasks:
+  - name: Mark worker1 as database-primary
+    docker_node:
+      hostname: worker1
+      labels:
+        - database-primary
