@@ -6,3 +6,18 @@
 
 # Setup networks docker_network
 # Setup volumes docker_volume
+
+# docker-networks
+# none
+# bridge
+# host
+# overlay
+# ingres
+
+# docker_volumes
+# Припинить бд к определенной ноде
+# Использовать для бд aws/azure
+# Использовать бд вне кластера
+# Репликация бд по нодам
+# Использовать внешний nfs volume
+# Использовать припиненый к контейнеру volume
