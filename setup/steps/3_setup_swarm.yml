@@ -1,0 +1,15 @@
+- name: Setup docker swarm
+  hosts: node1
+  gather_facts: true
+  tasks:
+  - name: Ensure docker swarm
+    docker_swarm:
+      state: present
+
+  - name: Ensure labels
+    docker_node:
+      hostname: '{{ ansible_hostname }}'
+      labels:
+        postgresql: enabled
+        rabbitmq: enabled
+        registry: enabled

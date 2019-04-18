@@ -1,8 +1,0 @@
-- name: Deploy some containers
-  hosts: master
-  tasks:
-  - docker_swarm_service:
-      name: web
-      image: nginx
-      replicas: 5
-      state: absent

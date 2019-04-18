@@ -1,0 +1,41 @@
+- name: Setup postgresql
+  hosts: node1
+  vars_files: ../secrets.yml
+  tasks:
+  - name: Ensure volume
+    docker_volume:
+      name: postgresql_volume
+      state: present
+  
+  - name: Ensure network
+    docker_network:
+      name: postgresql_network
+      driver: overlay
+      state: present
+
+  - name: Ensure postgresql
+    docker_swarm_service:
+      name: postgresql
+      image: postgres:11.2-alpine
+      hostname: postgresql
+      constraints:
+        - node.labels.postgresql == enabled
+      publish:
+      - published_port: 5432
+        target_port: 5432
+        mode: host
+      limit_cpu: 2
+      limit_memory: 3G
+      restart_policy: any
+      restart_policy_delay: 20
+      restart_policy_attempts: 5
+      env:
+      - POSTGRES_PASSWORD={{ postgresql_password }}
+      # - POSTGRES_USER=postgres
+      # - POSTGRES_DB=postgres
+      networks:
+      - postgresql_network
+      mounts:
+      - type: volume
+        source: postgresql_volume
+        target: /var/lib/postgresql/data

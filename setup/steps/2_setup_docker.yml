@@ -1,0 +1,25 @@
+- name: Setup docker
+  hosts: cluster
+  become: true
+  vars_files: ../secrets.yml
+  tasks:
+  # TODO: Add to /etc/apk/repositories
+
+  - name: Ensure docker-ce
+    apk:
+      name: docker
+      state: present
+      update_cache: true
+    failed_when: false
+  
+  - name: Ensure docker daemon
+    service:
+      name: docker
+      enabled: true # rc-update add docker boot
+      state: started
+  
+  - name: Ensure user in docker group
+    user:
+      name: ansible
+      groups: docker
+      append: yes

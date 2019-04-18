@@ -1,0 +1,22 @@
+- name: Setup python
+  hosts: cluster
+  become: true
+  tasks:
+  - include_vars: ../secrets.yml
+
+  - name: Install raw python
+    raw: apk add python
+    register: result
+    changed_when: "'Installing python2' in result.stdout"
+    failed_when: false
+
+  - name: Ensure pip
+    apk:
+      name: py-pip
+      state: present
+  
+  - name: Ensure docker-py
+    pip:
+      name: docker
+      state: present
+    

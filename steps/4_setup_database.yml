@@ -1,6 +1,0 @@
-- name: Setup database
-  hosts: master
-  tasks:
-  - debug: Create nfs volume
-  - debug: Create database network
-  - debug: Add database to cluster with mounted volume and connected network

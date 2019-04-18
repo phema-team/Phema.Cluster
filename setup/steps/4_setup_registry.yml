@@ -1,0 +1,37 @@
+- name: Setup docker registry
+  hosts: registry
+  tasks:
+  - name: Ensure volume
+    docker_volume:
+      name: registry_volume
+      state: present
+  
+  - name: Ensure network
+    docker_network:
+      name: registry_network
+      driver: overlay
+      state: present
+
+  - name: Ensure registry
+    docker_swarm_service:
+      name: registry
+      image: registry:2
+      hostname: registry
+      constraints:
+        - node.labels.registry == enabled
+      publish:
+      - published_port: 5000
+        target_port: 5000
+        mode: host
+      limit_cpu: 1
+      limit_memory: 512m
+      restart_policy: any
+      restart_policy_delay: 20
+      restart_policy_attempts: 5
+      # env:
+      networks:
+      - registry_network
+      mounts:
+      - type: volume
+        source: registry_volume
+        target: /var/lib/registry

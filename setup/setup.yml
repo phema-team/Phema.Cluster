@@ -1,0 +1,6 @@
+- import_playbook: steps/1_setup_python.yml
+- import_playbook: steps/2_setup_docker.yml
+- import_playbook: steps/3_setup_swarm.yml
+- import_playbook: steps/4_setup_registry.yml
+- import_playbook: steps/5_setup_postgresql.yml
+- import_playbook: steps/6_setup_rabbitmq.yml
